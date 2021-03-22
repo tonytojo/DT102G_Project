@@ -32,8 +32,9 @@ namespace Projekt_DT102G.Controllers
 		}
 
 
-			public RedirectToActionResult AddToCart(int bookId, string currentUrl)
+		public RedirectToActionResult AddToCart(int bookId, string currentUrl)
 		{
+		
 			Book book = _context.Books.FirstOrDefault(b => b.BookId == bookId);
 			if (book != null)
 			{
@@ -41,6 +42,7 @@ namespace Projekt_DT102G.Controllers
 			}
 
 			return RedirectToAction("Index", new { currentUrl });
+			return RedirectToAction("Index");
 		}
 
 		public RedirectToActionResult RemoveFromCart(int bookId, string currentUrl)

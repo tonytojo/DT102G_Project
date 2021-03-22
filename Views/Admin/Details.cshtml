@@ -42,7 +42,11 @@
 		</dd>
 
 		<dd class="col-sm-10">
-			<img class="w-25" src="~/image/@Model.PhotoPath">
+			<img class="w-25" src="~/image/@Model.PhotoPath" alt="@Model.Description">
+		</dd>
+
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Alt)
 		</dd>
 	</dl>
 </div>

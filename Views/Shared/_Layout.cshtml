@@ -9,9 +9,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@ViewData["Title"] - ProjectDT102G</title>
 	<link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css" />
-	@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-	<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	@*<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />*@
 	<link rel="stylesheet" href="~/css/site.css" />
 	<link href="~/css/style.css" rel="stylesheet" />
 </head>
@@ -20,7 +20,7 @@
 		<div class="container">
 			<div class="d-flex mt-2">
 				<a class="navbar-brand ml-3 mt-2" href="/">
-					<img src="~/image/logo.png" style="display: inline-block;">
+					<img src="~/image/logo.png" style="display: inline-block;" alt="En bild på en liten hög med böcker" />
 				</a>
 				<h1 class="text-center flex1">Bästa boken</h1>
 				<div class="col-4 text-right">
@@ -72,7 +72,7 @@
 	<div class="container">
 		<div class="row m-1 p-1">
 			@*Show min-width: 768px) 576*@
-			<div id="categories" class="d-none d-md-block mt-5 mr-2">
+			<div id="categoriesX" class="d-none d-md-block mt-5 mr-2">
 				@await Component.InvokeAsync("GenreMenu")
 			</div>
 
@@ -82,7 +82,7 @@
 			</div>
 
 			<div class="col-md-9">
-				<main role="main" class="pb-3 mt-5">
+				<main class="pb-3 mt-5">
 					@RenderBody()
 				</main>
 			</div>

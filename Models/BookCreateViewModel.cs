@@ -19,10 +19,12 @@ namespace Projekt_DT102G.Models
         [Required(ErrorMessage = "Please enter a author name")]
         public string Author { get; set; }
 
-
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int Price { get; set; }
+
+        [Required]
+        public string Alt { get; set; }
 
         //Navigation collection
         public virtual ICollection<OrderLine> OrderLines { get; set; }

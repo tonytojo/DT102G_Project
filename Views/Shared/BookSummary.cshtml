@@ -15,7 +15,7 @@
 		</p>
 	</div>
 
-	<form id="@Model.BookId" asp-action="AddToCart" asp-controller="Cart" method="post">
+	<form asp-action="AddToCart" asp-controller="Cart" method="post">
 		<input type="hidden" asp-for="BookId" />
 		<input type="hidden" name="currentUrl" value="@currentUrl" />
 		<span>

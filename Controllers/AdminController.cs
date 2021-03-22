@@ -14,18 +14,23 @@ using Projekt_DT102G.Models;
 
 namespace Projekt_DT102G.Controllers
 {
+    //Only the person with role attribute is Authorize for action methods in this class
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
-        IWebHostEnvironment hostEnvironment;
+        private IWebHostEnvironment hostEnvironment;
 
+        //Ctor
+        //ApplicationDbContext is the channel to the database and IWebHostEnvironment is used for
+        //have a link to wwwroot
         public AdminController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
             this.hostEnvironment = hostEnvironment;
         }
 
-       [Authorize(Roles = "Admin")]
+        //Get all books sorted on category and then by name include category
+   //    [Authorize(Roles = "Admin")]
         public IActionResult Index(int id)
         {
             var list = _context.Books.OrderBy(x => x.Genres.GenreName).ThenBy(x=>x.Name).Include(b => b.Genres).ToList();
@@ -42,11 +47,14 @@ namespace Projekt_DT102G.Controllers
                 ViewData["id"] = id;
             }
 
+            //Get the number of books in stock
             ViewBag.StockCount = list.Count;
             return View("Index", list);
         }
 
-       [Authorize(Roles = "Admin")]
+        //Get the book with the specified id to be updated
+        //Return NotFound if the book can't be found
+        [Authorize(Roles = "Admin")]
          public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -65,6 +73,8 @@ namespace Projekt_DT102G.Controllers
             return View(book);
         }
     
+
+        //We call this method so the user can input data for a new Book in the View
        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -72,14 +82,17 @@ namespace Projekt_DT102G.Controllers
             return View();
         }
 
+        //This method is called when the user has input all data for a new book
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-       [Authorize(Roles = "Admin")]
+      // [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookCreateViewModel vmodel)
         {
+            //Check if the data is valid. If the user has input an image make sure that this image
+            //is added to wwwroot
             if (ModelState.IsValid)
             {
                 string uniqueFileName = null;
@@ -91,6 +104,8 @@ namespace Projekt_DT102G.Controllers
                    vmodel.Photo.CopyTo(new FileStream(filepath, FileMode.Create));
                 }
 
+                //Prepare the Book object with data from input. This Book object will be
+                //added to thé database
                 Book newBook = new Book()
                 {
                     Name= vmodel.Name,
@@ -99,18 +114,27 @@ namespace Projekt_DT102G.Controllers
                     Price = vmodel.Price,
                     GenreId = vmodel.GenreId,
                     Genres = vmodel.Genres,
+                    Alt = vmodel.Alt,
                     PhotoPath = uniqueFileName
                 };
 
                 _context.Add(newBook);
                 await _context.SaveChangesAsync();
+
+                //Call index to refresh the screen so we can see the new book
+                //We pass the new id to Index methos so the new bok will be listed first in the
+                //List of books
                 int Id = newBook.BookId;
                 return RedirectToAction(nameof(Index), new { Id });
             }
+
+            //Here we have invalid data so pass back this data to the View
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        //Here we have Edit so we can update a Book 
+        //We pass in the id to update and this id is fetched from database
+     //   [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -119,6 +143,7 @@ namespace Projekt_DT102G.Controllers
             }
             var book = await _context.Books.FindAsync(id);
 
+            //We pass down the book to be updated
             BookCreateViewModel model = new BookCreateViewModel()
             {
                  Name = book.Name,
@@ -127,6 +152,7 @@ namespace Projekt_DT102G.Controllers
                  Price=book.Price,
                  GenreId=book.GenreId,
                  Genres=book.Genres,
+                 Alt = book.Alt,
                  PhotoPath= book.PhotoPath
             };
 
@@ -138,10 +164,11 @@ namespace Projekt_DT102G.Controllers
             return View(model);
         }
 
+        //This method is called when we have updated the book and clicked on save
         // POST: Books/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
+      //  [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, BookCreateViewModel vmodel)
@@ -149,6 +176,8 @@ namespace Projekt_DT102G.Controllers
             if (id != vmodel.Id)
                 return NotFound();
             
+            //If we have a Photo for this Book make sure you add or update this image to wwwroot.
+            //If there is an update for an image we remove the old imge first
             string uniqueFileName = null;
             if (vmodel.Photo != null)
             {
@@ -169,6 +198,7 @@ namespace Projekt_DT102G.Controllers
                 }
             }
 
+            //Prepare the book object with new data from the update
             Book newBook = new Book()
             {
                 BookId = vmodel.Id,
@@ -178,9 +208,11 @@ namespace Projekt_DT102G.Controllers
                 Price = vmodel.Price,
                 GenreId = vmodel.GenreId,
                 Genres = vmodel.Genres,
+                Alt = vmodel.Alt,
                 PhotoPath = uniqueFileName
             };
 
+            //Check if the data is valid
             if (ModelState.IsValid)
             {
                 try
@@ -199,6 +231,7 @@ namespace Projekt_DT102G.Controllers
                         throw;
                     }
                 }
+                //We pass the id to the Indexd action method so this upadted book will be first in the list of books
                 return RedirectToAction(nameof(Index), new { id });
             }
 
@@ -206,8 +239,9 @@ namespace Projekt_DT102G.Controllers
             return View(vmodel);
         }
 
+        //We get the id from the database from the passed id in the argument list
         // GET: Books/Delete/5
-        [Authorize(Roles = "Admin")]
+      //  [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -225,12 +259,15 @@ namespace Projekt_DT102G.Controllers
 
             return View(book);
         }
+
+        //When we have clicked remove for a book in the View we call this delete method
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-         [Authorize(Roles = "Admin")]
+       //  [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id, string PhotoPath)
         {
+            //Check if we have an image path. If we have remove the image in wwwroot
             if (PhotoPath != null)
             {
                 string uploadsDir = Path.Combine(hostEnvironment.WebRootPath, "image");

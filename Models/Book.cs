@@ -18,6 +18,8 @@ namespace Projekt_DT102G.Models
         [Required(ErrorMessage = "Please enter a author name")]
         public string Author { get; set; }
 
+        [Required]
+		public string Alt { get; set; }
 
 		[Required]
         [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
@@ -30,6 +32,8 @@ namespace Projekt_DT102G.Models
 
         //Navigation reference, Foreign key
         public virtual Genre Genres { get; set; }
+
+        [Display(Name = "Category")]
         public int GenreId { get; set; }
     }
 }

@@ -17,7 +17,7 @@
 	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Author)</div>
 	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Price)</div>
 	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Genres.GenreName)</div>
-	<div class="col-md d-none d-md-inline">Image</div>
+	@*<div class="col-md d-none d-md-inline">Image</div>*@
 	<div class="col-md d-none d-md-inline">Action</div>
 </div>
 
@@ -63,7 +63,7 @@
 		<div class="col-md pb-1">
 			<div class="d-flex">
 				<div class="d-md-none w-auto pr-1 font-weight-bold">Image</div>
-				<img style="max-height:100px; max-width:100px" src="~/image/@item.PhotoPath">
+				<img style="max-height:100px; max-width:100px" src="~/image/@item.PhotoPath" alt="">
 			</div>
 		</div>
 

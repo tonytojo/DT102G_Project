@@ -10,7 +10,6 @@ namespace Projekt_DT102G.Models
 {
     public class SessionCart : Cart
     {
-
         public static ISession session;
 
         public static Cart GetCart(IServiceProvider services)

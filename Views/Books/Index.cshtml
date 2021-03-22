@@ -6,18 +6,37 @@
 
 @{
 	ViewData["Title"] = "Index";
+	var currentUrl = Context.Request.Path.Value;
 }
 
 <h2 class="title mt-2">Current books in stock [@ViewBag.StockCount] </h2>
 
-@foreach (var book in Model)
+@for (int i=0; i < Model.Count(); i++)
 {
-	<partial name="BookSummary" model="book" />
+	<div class="card m-1 p-2">
+		<div class="pb-1">
+			<p>
+				<b>@Model[i].Name</b>
+				<span class="badge-primary badge-pill p-1" style="float:right">@Model[i].Price.ToString("c")</span>
+			</p>
+		</div>
+
+		<form asp-action="AddToCart" asp-controller="Cart" method="post">
+			<input type="hidden" name="BookId" asp-for ="@Model[i].BookId" />
+			<input type="hidden" name="currentUrl" value="@currentUrl" />
+			<span>
+				@Model[i].Description
+				<button type="submit" class="btn btn-success btn-sm" style="float:right">
+					Add To Cart
+				</button>
+			</span>
+		</form>
+	</div>
+
+	@*<partial name="BookSummary" model="book" />*@
 }
 
 <div>
-	<p>
-		@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", "Books", new { genrePage = page, genre = ViewBag.currentGenre }),
-		new PagedListRenderOptions() { PageClasses = new string[] { "btn" } })
-	</p>
+	@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", "Books", new { genrePage = page, genre = ViewBag.currentGenre }),
+	new PagedListRenderOptions() { PageClasses = new string[] { "btn" } })
 </div>
