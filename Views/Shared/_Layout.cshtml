@@ -1,0 +1,108 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - ProjectDT102G</title>
+	<link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css" />
+	@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+
+	<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	<link rel="stylesheet" href="~/css/site.css" />
+	<link href="~/css/style.css" rel="stylesheet" />
+</head>
+<body>
+	<header>
+		<div class="container">
+			<div class="d-flex mt-2">
+				<a class="navbar-brand ml-3 mt-2" href="/">
+					<img src="~/image/logo.png" style="display: inline-block;">
+				</a>
+				<h1 class="text-center flex1">Bästa boken</h1>
+				<div class="col-4 text-right">
+					@await Component.InvokeAsync("CartShortSummary")
+				</div>
+			</div>
+
+
+			<div class="ml-1 text-center">
+				<form asp-action="Search" asp-controller="Books">
+					<input class="w-50" name="search" value="@ViewBag.search">
+					<input type="submit" value="Search Title" class="btn btn-primary btn-sm" />
+				</form>
+			</div>
+		</div>
+
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 pt-0">
+			<div class="container">
+				<a class="navbar-brand" asp-area="" asp-controller="Books" asp-action="Index">ProjectDT102G</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1 justify-content-end">
+						@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+						{
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Books</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Genres" asp-action="Index">Category</a>
+						</li>
+						}
+					</ul>
+					<partial name="_LoginPartial" />
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="d-flex flex-row justify-content-center" id="homepage-front-logo">
+		<img class="img-fluid mx-auto" src="~/image/poster.jpg" alt="En bild på en bokhylla med böcker" />
+	</div>
+
+
+	<div class="container">
+		<div class="row m-1 p-1">
+			@*Show min-width: 768px) 576*@
+			<div id="categories" class="d-none d-md-block mt-5 mr-2">
+				@await Component.InvokeAsync("GenreMenu")
+			</div>
+
+			@*Show when screen < 768px*@
+			<div id="categories" class="d-md-none mx-auto mt-5">
+				@await Component.InvokeAsync("GenreMenu", new { horizontalmenu= true})
+			</div>
+
+			<div class="col-md-9">
+				<main role="main" class="pb-3 mt-5">
+					@RenderBody()
+				</main>
+			</div>
+		</div>
+	</div>
+
+	@*<div class="container">
+			<main role="main" class="pb-3">
+				@RenderBody()
+			</main>
+		</div>*@
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2021 - ProjectDT102G - Tony Johansson
+		</div>
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

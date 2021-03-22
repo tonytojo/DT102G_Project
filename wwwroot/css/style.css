@@ -1,0 +1,25 @@
+﻿.flex1
+{
+	flex:1;
+	margin-bottom:0;
+}
+
+.active {
+	background-color: #0275d8;
+}
+
+.title{
+	font-size:1.7em;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+	background-color: #d4ebf2;
+}
+
+.d-100chld div {
+	width: 100%;
+}
+
+.d-100chld:nth-child(even) {
+	background-color: #ddeeff;
+}

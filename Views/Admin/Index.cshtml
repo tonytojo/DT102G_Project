@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Projekt_DT102G.Models.Book>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h2 class="title pb-1">Current books in stock [@ViewBag.StockCount] </h2>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+
+@*When you have flex you must specify that all child must have width 100%*@
+<div class="d-flex d-100chld font-weight-bold mb-2">
+	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Name)</div>
+	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Description)</div>
+	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Author)</div>
+	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Price)</div>
+	<div class="col-md d-none d-md-inline">@Html.DisplayNameFor(model => model.Genres.GenreName)</div>
+	<div class="col-md d-none d-md-inline">Image</div>
+	<div class="col-md d-none d-md-inline">Action</div>
+</div>
+
+@foreach (var item in Model)
+{
+	@*When you have flex you must specify that all child must have width 100%*@
+	<div class="row d-100chld mb-1">
+		<div class="col-md pb-2">
+			<div class="d-flex">
+				<div class="d-md-none w-auto pr-1 font-weight-bold">@Html.DisplayNameFor(model => model.Name):</div>
+				@Html.DisplayFor(modelItem => item.Name)
+			</div>
+		</div>
+
+		<div class="col-md pb-1">
+			<div class="d-flex">
+				<div class="d-md-none w-auto pr-1 font-weight-bold">@Html.DisplayNameFor(model => model.Description):</div>
+				@Html.DisplayFor(modelItem => item.Description)
+			</div>
+		</div>
+
+		<div class="col-md pb-1">
+			<div class="d-flex">
+				<div class="d-md-none w-auto pr-1 font-weight-bold">@Html.DisplayNameFor(model => model.Author):</div>
+				@Html.DisplayFor(modelItem => item.Author)
+			</div>
+		</div>
+
+		<div class="col-md pb-1">
+			<div class="d-flex">
+				<div class="d-md-none w-auto pr-1 font-weight-bold">@Html.DisplayNameFor(model => model.Price):</div>
+				@Html.DisplayFor(modelItem => item.Price)
+			</div>
+		</div>
+
+		<div class="col-md pb-1">
+			<div class="d-flex">
+				<div class="d-md-none w-auto pr-1 font-weight-bold">@Html.DisplayNameFor(model => model.Genres.GenreName)</div>
+				@Html.DisplayFor(modelItem => item.Genres.GenreName)
+			</div>
+		</div>
+
+		<div class="col-md pb-1">
+			<div class="d-flex">
+				<div class="d-md-none w-auto pr-1 font-weight-bold">Image</div>
+				<img style="max-height:100px; max-width:100px" src="~/image/@item.PhotoPath">
+			</div>
+		</div>
+
+		<div class="col-md pb-1">
+			<div class="d-flex">
+				<div class="d-md-none w-auto pr-1 font-weight-bold">Action</div>
+				<a class="p-1" asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
+				<a class="p-1" asp-action="Details" asp-route-id="@item.BookId">Details</a> |
+				<a class="p-1" asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+			</div>
+		</div>
+	</div>
+}
+
+
+@*<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.Name)
+				</th>
+
+				<th>
+					@Html.DisplayNameFor(model => model.Description)
+				</th>
+
+				<th>
+					@Html.DisplayNameFor(model => model.Author)
+				</th>
+
+				<th>
+					@Html.DisplayNameFor(model => model.Price)
+				</th>
+
+				<th>Kategori</th>
+				<th>Image</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.Author)
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.Genres.GenreName)
+				</td>
+
+				<td>
+					<img style="max-height:100px; max-width:100px" src="~/image/@item.PhotoPath">
+				</td>
+
+				<td class="d-flex">
+					<a class="p-1" asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
+					<a class="p-1" asp-action="Details" asp-route-id="@item.BookId">Details</a> |
+					<a class="p-1" asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>*@

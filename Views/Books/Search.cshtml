@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Projekt_DT102G.Models.Book>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h2 class="title pb-1">Current books in stock</h2>
+
+@foreach (var book in Model)
+{
+	<partial name="BookSummary" model="book" />
+}

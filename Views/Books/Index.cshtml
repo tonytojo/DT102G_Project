@@ -1,0 +1,23 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+@using Microsoft.AspNetCore.Mvc.Core;
+@model IPagedList<Projekt_DT102G.Models.Book>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h2 class="title mt-2">Current books in stock [@ViewBag.StockCount] </h2>
+
+@foreach (var book in Model)
+{
+	<partial name="BookSummary" model="book" />
+}
+
+<div>
+	<p>
+		@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", "Books", new { genrePage = page, genre = ViewBag.currentGenre }),
+		new PagedListRenderOptions() { PageClasses = new string[] { "btn" } })
+	</p>
+</div>

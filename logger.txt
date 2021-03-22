@@ -1,0 +1,3 @@
+In SeedData
+In SeedRoles admin exist
+In SeedUsers admin@telia.com exist already

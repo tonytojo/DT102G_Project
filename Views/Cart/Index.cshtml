@@ -1,0 +1,54 @@
+﻿@model CartViewModel
+
+@{
+	ViewData["Title"] = "Index";
+	var foo = Model;
+}
+
+<h2 class="title">Current cart....</h2>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Quantity</th>
+			<th>Name</th>
+			@*<th>Category</th>*@
+			<th class="text-right">Price</th>
+			<th class="text-right">Subtotal</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach (var item in Model.Cart.OrderItems)
+		{
+			<tr>
+				<td class="text-left">@item.Quantity </td>
+				<td class="text-left">@item.Book.Name</td>
+				@*<td class="text-left">@item.Book.Category</td>*@
+				<td class="text-right">@item.Book.Price.ToString("c")</td>
+				<td class="text-right">@((item.Quantity * item.Book.Price).ToString("c"))</td>
+				<td>
+					<form asp-action="RemoveFromCart" method="post">
+						<input type="hidden" name="BookId" value="@item.Book.BookId" />
+						<input type="hidden" name="CurrentUrl" value="@Model.CurrentUrl" />
+						<button type="submit" class="btn btn-sm btn-danger">
+							Remove
+						</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td class="text-right" colspan="4">Total:</td>
+			<td class="text-right">@Model.Cart.ComputeOrderValue()</td>
+		</tr>
+	</tfoot>
+</table>
+
+<div class="text-right">
+	<a href="@Model.CurrentUrl" class="btn btn-primary">More Shopping</a>
+	<a class="btn btn-primary" asp-action="Checkout" asp-controller="Orders"> Checkout </a>
+</div>

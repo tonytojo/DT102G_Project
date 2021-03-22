@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model Projekt_DT102G.Models.Book
+@{
+	var currentUrl = Context.Request.Path.Value;
+}
+
+<div class="card m-1 p-2">
+	<div class="pb-1">
+		<p>
+			<b>@Model.Name</b>
+			<span class="badge-primary badge-pill p-1" style="float:right">@Model.Price.ToString("c")</span>
+		</p>
+	</div>
+
+	<form id="@Model.BookId" asp-action="AddToCart" asp-controller="Cart" method="post">
+		<input type="hidden" asp-for="BookId" />
+		<input type="hidden" name="currentUrl" value="@currentUrl" />
+		<span>
+			@Model.Description
+			<button type="submit" class="btn btn-success btn-sm" style="float:right">
+				Add To Cart
+			</button>
+		</span>
+	</form>
+</div>
+

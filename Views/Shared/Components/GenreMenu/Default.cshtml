@@ -1,0 +1,22 @@
+﻿@model NavGenre
+
+<h2 class="title text-center pb-2">Category</h2>
+<a class="btn btn-block
+    @(Model.Home ? "btn-primary": "btn-secondary")"
+   href="/">
+	Home
+</a>
+
+@foreach (string genre in Model.Genre)
+{
+	<a class="btn btn-block
+        @(genre == ViewBag.SelectedGenre ? "btn-primary": "btn-secondary")"
+	   asp-action="Index"
+	   asp-controller="Books"
+	   asp-route-genre="@genre"
+	   asp-route-genrePage="1">
+		@genre
+	</a>
+}
+
+

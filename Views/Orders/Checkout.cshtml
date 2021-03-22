@@ -1,0 +1,74 @@
+﻿@model Projekt_DT102G.Models.OrderCartViewModel
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h2 class="title">Create shipping information</h2>
+
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Create" method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="@Model.Orders.Name" class="control-label"></label>
+				<input asp-for="@Model.Orders.Name" class="form-control" />
+				<span asp-validation-for="@Model.Orders.Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="@Model.Orders.Adress" class="control-label"></label>
+				<input asp-for="@Model.Orders.Adress" class="form-control" />
+				<span asp-validation-for="@Model.Orders.Adress" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="@Model.Orders.SSN" class="control-label"></label>
+				<input asp-for="@Model.Orders.SSN" class="form-control" />
+				<span asp-validation-for="@Model.Orders.SSN" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<h2 class="title">Order information</h2>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Quantity</th>
+			<th>Name</th>
+			<th class="text-right">Price</th>
+			<th class="text-right">Subtotal</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach (var item in Model.Carts.OrderItems)
+		{
+			<tr>
+				<td class="text-left">@item.Quantity </td>
+				<td class="text-left">@item.Book.Name</td>
+				<td class="text-right">@item.Book.Price.ToString("c")</td>
+				<td class="text-right">@((item.Quantity * item.Book.Price).ToString("c"))</td>
+			</tr>
+		}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td class="text-right" colspan="4">Total:</td>
+			<td class="text-right">@Model.Carts.ComputeOrderValue()</td>
+		</tr>
+	</tfoot>
+</table>
+
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
