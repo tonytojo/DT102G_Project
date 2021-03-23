@@ -25,6 +25,8 @@ namespace Projekt_DT102G.Controllers
 			_config = config;
 		}
 
+		//Get PageSize and get all books for all category or all books for a specific category
+		//Get total number of books or total number of books for a category
 		public IActionResult Index(string genre, int? genrePage)
 		{
 			int NrOfBooksOnPage = int.Parse(_config.GetValue<string>("NrOfBooksOnPage"));
@@ -38,6 +40,7 @@ namespace Projekt_DT102G.Controllers
 			return View(list);
 		}
 
+		//Search in bookname for the specified search string
 		public async Task<IActionResult> Search(string search)
 		{
 			var bookContent = _context.Books.Include(r => r.Genres).Where(x => x.Name.Contains(search));

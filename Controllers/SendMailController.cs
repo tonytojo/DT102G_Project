@@ -21,11 +21,13 @@ namespace Projekt_DT102G.Controllers
 			_config = config;
 		}
 
+		//Call View to display the Form
 		public IActionResult Index()
 		{
 			return View();
 		}
 
+		//When the form is filled in we post it to this method wher se send it by using SendGrid
 		[HttpPost]
 		public async Task<IActionResult> Index(Email email)
 		{
@@ -38,30 +40,6 @@ namespace Projekt_DT102G.Controllers
 			var htmlContent = "<strong>Testing to send Email from Azure with C#</strong>";
 			var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 			await client.SendEmailAsync(msg);
-
-			//try
-			//{
-			//	string to = email.To;
-			//	string subject = email.Subject;
-			//	string body = email.Body;
-			//	MailMessage mailMessage = new MailMessage();
-			//	mailMessage.To.Add(to);
-			//	mailMessage.Subject = subject;
-			//	mailMessage.Body = body;
-			//	mailMessage.From = new MailAddress("johansson.andersson@telia.com");
-			//	mailMessage.IsBodyHtml = false;
-			//	SmtpClient smtp = new SmtpClient("mailout.telia.com");
-			//	smtp.Port = 587;
-			//	smtp.UseDefaultCredentials = true;
-			//	smtp.EnableSsl = false;
-			//	smtp.Credentials = new System.Net.NetworkCredential("johansson.andersson@telia.com", "Pissen30060");
-			//	smtp.Send(mailMessage);
-			//}
-			//catch (Exception e)
-			//{
-			//	string foo = e.Message;
-			//}
-
 			ViewBag.message = "The mail has Been sent To " + email.To + " Successfully";
 			return View();
 		}

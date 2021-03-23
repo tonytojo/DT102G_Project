@@ -15,6 +15,7 @@ namespace Projekt_DT102G.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+        //Ctor
         public GenresController(ApplicationDbContext context)
         {
             _context = context;

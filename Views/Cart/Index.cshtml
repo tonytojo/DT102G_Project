@@ -2,7 +2,6 @@
 
 @{
 	ViewData["Title"] = "Index";
-	var foo = Model;
 }
 
 <h2 class="title">Current cart....</h2>
@@ -12,7 +11,6 @@
 		<tr>
 			<th>Quantity</th>
 			<th>Name</th>
-			@*<th>Category</th>*@
 			<th class="text-right">Price</th>
 			<th class="text-right">Subtotal</th>
 			<th></th>
@@ -25,7 +23,6 @@
 			<tr>
 				<td class="text-left">@item.Quantity </td>
 				<td class="text-left">@item.Book.Name</td>
-				@*<td class="text-left">@item.Book.Category</td>*@
 				<td class="text-right">@item.Book.Price.ToString("c")</td>
 				<td class="text-right">@((item.Quantity * item.Book.Price).ToString("c"))</td>
 				<td>

@@ -1,0 +1,102 @@
+Demonstration av applikation webbutiken Bästa boken
+*****************************************************
+
+Komponenter 
+***********
+Använder två komponenter CartShortSummary är en klickbar ikon för att visa aktuellt innehåll i kundkorgen
+och KategoriMeny för att visa alla kategorier av böcker.
+
+Paginering
+**********
+Använder mig av paginering där Pagesize anges i appsettings filen och configuration av UseEndpoints
+för att visa sidnummer i urlen. 
+Som hjälp använder jag nuget paketet X.PagedList.Mvc.Core för denna paginering
+
+Controller
+**********
+För att få en bra struktur använder jag följande  5 controllers
+AdminControler för att hantera CRUD för administratören
+BooksController för att visa böcker per kategori genom paginering
+CartController för att hantera kundkorgen
+Genres för att hantera CRUD för kategorier som använda av admin
+SendmailController för att sända mail via nugen paketet "SendGrid"
+OrderController vid hantering av checkout och order
+
+Övrigt
+******
+Har med en Search för att kunna söka på vad som helst i boknamnet.
+Visar även aktuell lager av böcker i lager för respektive kategori.
+
+
+Cart
+****
+Använder mig av dependenny injection för Cart vilket innebär att så 
+fort man nehöver en Cart kommer runtime att bifoga aktuell cart från Session.
+
+Models
+******
+Har med 11 modeller flera av dessa är bara ViewModels.
+
+Responsive Design
+****************
+Fungerar perfekt
+
+Databas
+******
+Består av 3 tabeller category, Books and Order
+
+CSS
+***
+Använder Bootstrap 4
+
+
+=============================================================================================================
+ADMIN
+Denna hanterar CRUD för böcker och kategorier genom att Administratören har role namnet Admin
+Vid startup kontrollerar jag om administratören är definerad genom Email och role Admin om inte så skapas de.
+
+
+Ingående beskrivning av Image uppladdning
+****************************************
+För att kunna välja filer för att ladda upp behövs IFormFile.
+Du väljer en fil genom browse som resulterari att en label visar den valda filen
+Genom binding följer vald fil med till controller
+Söker fram pathen till rot katalogen wwwrot/image och skriver
+dit filen mha Guid hantering.
+Det unika filnamnet måste vara i synk mln db och wwwroot
+När man tar bort en bok måste man också ta bort den från wwwroot
+Flera böcker kan då ladda upp samma fil
+Vid create av bok måste man ange en text för alt taggen
+
+
+Skicka E-mail
+*************
+Använder en API key som ligger i appsettings.json som jag läser in.
+
+Create/Edit
+När man skapar en ny bok eller uppdaterar en kommer den att visas först i listan om böcker
+
+Svårigheter
+***********
+Jag har Telia och SMTP men Azure stöder inte SMTP fick göra om och använda SendGrid.
+Om jag använder foreach när jag skriver ut mina böcker kommer id att dupliceras fick i stället använda en vanlig for loop
+Fick plocka bort en navigerings referens för att kunna serialisera till Session.
+
+Publisering
+***********
+Använde azure med sql server 
+Jag följde bara guiden på azure och för databasen använda jag script to file lokalt som jag sedan körde för att ladda azure db med data.
+
+*********************************************************************************************************************
+
+Video-demonstration
+Skapa en video-presentation av ditt projekt. Cirka 10 minuter är lämplig längd på filmen.
+
+Under projektredovisningen försöker ni ta upp följande:
+
+Hur er applikation är uppbyggd och sektionerad
+Ingående beskrivningar av mera komplicerade delar i applikationen (exempelvis om ni har implementerat e-postfunktion, API, filuppladdning...)
+Beskrivning av uppkomna problem och hur ni löst eller gått runt dessa
+Demonstration av applikation
+Förslag på förbättringar och möjliga vidareutvecklingar
+Hur ni gått tillväga för att publicera er färdiga lösning om så har gjorts

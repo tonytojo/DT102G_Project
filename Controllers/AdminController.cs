@@ -30,7 +30,7 @@ namespace Projekt_DT102G.Controllers
         }
 
         //Get all books sorted on category and then by name include category
-   //    [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index(int id)
         {
             var list = _context.Books.OrderBy(x => x.Genres.GenreName).ThenBy(x=>x.Name).Include(b => b.Genres).ToList();
@@ -75,7 +75,7 @@ namespace Projekt_DT102G.Controllers
     
 
         //We call this method so the user can input data for a new Book in the View
-       [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName");
@@ -87,7 +87,7 @@ namespace Projekt_DT102G.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-      // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookCreateViewModel vmodel)
         {
@@ -125,6 +125,7 @@ namespace Projekt_DT102G.Controllers
                 //We pass the new id to Index methos so the new bok will be listed first in the
                 //List of books
                 int Id = newBook.BookId;
+                //We pass id so this new id will be at the top of list
                 return RedirectToAction(nameof(Index), new { Id });
             }
 
@@ -134,7 +135,7 @@ namespace Projekt_DT102G.Controllers
 
         //Here we have Edit so we can update a Book 
         //We pass in the id to update and this id is fetched from database
-     //   [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -168,7 +169,7 @@ namespace Projekt_DT102G.Controllers
         // POST: Books/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-      //  [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, BookCreateViewModel vmodel)
@@ -241,7 +242,7 @@ namespace Projekt_DT102G.Controllers
 
         //We get the id from the database from the passed id in the argument list
         // GET: Books/Delete/5
-      //  [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -264,7 +265,7 @@ namespace Projekt_DT102G.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-       //  [Authorize(Roles = "Admin")]
+         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id, string PhotoPath)
         {
             //Check if we have an image path. If we have remove the image in wwwroot

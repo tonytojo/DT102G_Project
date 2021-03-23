@@ -15,12 +15,14 @@ namespace Projekt_DT102G.Controllers
         private readonly ApplicationDbContext _context;
         private Cart cart;
 
+        //Ctor
         public OrdersController(ApplicationDbContext context, Cart cartService)
         {
             _context = context;
             cart = cartService;
         }
 
+        //Is called on checkout. We pass the Cart and an empty form to fill in to the View
         public IActionResult Checkout()
         {
             OrderCartViewModel orderCartViewModel = new OrderCartViewModel();
@@ -30,6 +32,7 @@ namespace Projekt_DT102G.Controllers
             return View(orderCartViewModel);
         }
 
+        //Call finish to say thanks for the order
 		// GET: Orders
 		public IActionResult Index(int? id)
         {
