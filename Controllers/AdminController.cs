@@ -101,7 +101,11 @@ namespace Projekt_DT102G.Controllers
                    string uploadsDir = Path.Combine(hostEnvironment.WebRootPath, "image");
                    uniqueFileName = Guid.NewGuid().ToString() + "_" + vmodel.Photo.FileName;
                    string filepath = Path.Combine(uploadsDir, uniqueFileName);
-                   vmodel.Photo.CopyTo(new FileStream(filepath, FileMode.Create));
+
+                    using (var fs = new FileStream(filepath, FileMode.Create))
+                    {
+                        vmodel.Photo.CopyTo(fs);
+                    }
                 }
 
                 //Prepare the Book object with data from input. This Book object will be
@@ -144,6 +148,10 @@ namespace Projekt_DT102G.Controllers
             }
             var book = await _context.Books.FindAsync(id);
 
+            //string imageFileWithGuid = book.PhotoPath;
+            //var filname = (imageFileWithGuid != null) ? imageFileWithGuid.Substring(imageFileWithGuid.IndexOf("_") + 1);
+
+
             //We pass down the book to be updated
             BookCreateViewModel model = new BookCreateViewModel()
             {
@@ -183,20 +191,27 @@ namespace Projekt_DT102G.Controllers
             if (vmodel.Photo != null)
             {
                 string uploadsDir = Path.Combine(hostEnvironment.WebRootPath, "image");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + vmodel.Photo.FileName;
-                string filepath = Path.Combine(uploadsDir, uniqueFileName);
+                string filepath;
 
-                using (var fs = new FileStream(filepath, FileMode.Create))
-                {
-                    vmodel.Photo.CopyTo(fs);
-                }
-
-                //remove old image file
+                //Remove old image file
                 if (!string.IsNullOrEmpty(vmodel.PhotoPath))
                 {
                     filepath = Path.Combine(uploadsDir, vmodel.PhotoPath);
                     System.IO.File.Delete(filepath);
                 }
+
+                //Add the new file to wwwroot
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + vmodel.Photo.FileName;
+                filepath = Path.Combine(uploadsDir, uniqueFileName);
+
+                using (var fs = new FileStream(filepath, FileMode.Create))
+				{
+                    vmodel.Photo.CopyTo(fs);
+                }
+            }
+            else
+			{
+                uniqueFileName = vmodel.PhotoPath;
             }
 
             //Prepare the book object with new data from the update
